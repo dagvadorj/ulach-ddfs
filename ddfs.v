@@ -3,8 +3,6 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 module ddfs(clk,fcontrol,outp);
-   parameter width = 8;
-   
    input clk;
    input [22:0] fcontrol;
    
@@ -13,22 +11,23 @@ module ddfs(clk,fcontrol,outp);
    reg [7:0] outp;
    reg [22:0] accum;
    reg sign;
-   reg [7:0] rom_data[2**(width+1)-1:0];
+   reg [8:0] accum_old;
+   reg [7:0] rom_data[2**9-1:0];
    
    initial
       begin
-         $readmemb("rom.dat", rom_data, 0, 2**(width+1)-1);
+         $readmemb("rom.dat", rom_data, 0, 2**9-1);
          accum <= 0;
+         sign <= 0;
       end
    
    always @(posedge clk)
       begin
-         $display(sign);
+         accum_old <= accum[22:14];
          accum <= accum + fcontrol;
-         if (accum[21] == 1'b1 && sign == 1'b0)
-            sign <= 1'b1;
-         else if (accum[21] == 1'b0 && sign == 1'b1)
-            sign <= 1'b0; 
+         $display("%d %d\n", accum_old, accum[22:14]);
+         if (accum_old > accum[22:14])
+            sign = ~sign;
          
          if (sign == 1'b0)
             outp <= rom_data[accum[22:14]];
