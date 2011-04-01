@@ -1,1 +1,7 @@
 This is the digital frequency synthesizer for Ulach
+
+Current specs are
+- 1MHz clock
+- 1Hz resolution
+- input: 23 bits
+- output: 8 bits
