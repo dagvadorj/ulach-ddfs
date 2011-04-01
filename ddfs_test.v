@@ -24,13 +24,10 @@ module ddfs_test;
    always #50 clk = ~clk;
 
    initial begin
-      // Initialize Inputs
       clk = 0;
       
-      fcontrol = 23'b00100000000000000000000;
-      #5000;
-      
-      $finish;
+      fcontrol = 23'b00000110000000000000000;
+      #200000;
       
       fcontrol = 23'b00000000110000000000000;
       #200000;
@@ -38,7 +35,6 @@ module ddfs_test;
       fcontrol = 23'b00000001110000000000000;
       #200000;
   
-      // Add stimulus here
       $finish;
 
    end
